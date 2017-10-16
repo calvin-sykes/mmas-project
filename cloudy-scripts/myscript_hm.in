@@ -1,0 +1,21 @@
+title "My first Cloudy script"
+#
+#
+# Haardt & Madau spectrum
+table HM12 redshift 0
+cmb redshift 0
+#blackbody, T=1e4 K
+#intensity 10 linear
+#
+# Pure H composition
+hden 0.1
+elements limit off 0
+#
+# Plane parallel geometry
+#radius 30
+#
+iterate to convergence
+print last iteration
+save overview "h_hm.ovr" last
+save continuum "h_hm.con" units microns
+#stop zone 500
