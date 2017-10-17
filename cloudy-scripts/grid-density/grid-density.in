@@ -1,0 +1,18 @@
+title "Vary density"
+#
+#
+# Haardt & Madau spectrum
+table HM12 redshift 0
+cmb redshift 0
+# Pure H composition
+hden 0 vary
+grid -4 0 0.5
+elements limit off 0
+#
+# Plane parallel geometry is default
+# (radius 30 implied)
+#
+iterate to convergence
+print last iteration
+save grid "grid-density.grd" last no hash
+save overview "grid-density.ovr" last separate
