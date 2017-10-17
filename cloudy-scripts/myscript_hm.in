@@ -4,11 +4,8 @@ title "My first Cloudy script"
 # Haardt & Madau spectrum
 table HM12 redshift 0
 cmb redshift 0
-#blackbody, T=1e4 K
-#intensity 10 linear
-#
 # Pure H composition
-hden 0.1
+hden -3
 elements limit off 0
 #
 # Plane parallel geometry

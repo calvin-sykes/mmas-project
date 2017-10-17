@@ -3,7 +3,7 @@ cmb redshift 0
 blackbody, T=1e4 K
 intensity 10 linear
 # log H number density
-hden 1
+hden 2
 # disable all elements except H
 elements limit off 0
 # Plane parallel geometry is assumed by default
