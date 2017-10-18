@@ -8,7 +8,10 @@ import re
 def plot(fn_base):
     file_list = sorted(glob.glob('grid*_' + fn_base + '.ovr'))
 
-    grid_file = np.loadtxt(fn_base + '.grd', usecols=(0,6), dtype=np.dtype([('idx',np.int),('hden','f')]))
+    grid_file = np.loadtxt(fn_base + '.grd',
+                           usecols=(0,6),
+                           dtype=np.dtype([('idx' ,np.int),
+                                           ('hden',np.float)]))
     
     datasets = []
     names = []
@@ -21,23 +24,16 @@ def plot(fn_base):
     plt.rc('text', usetex=True)
     
     plt.figure()
-    for set, name in zip(datasets,names):
+    for idx, dset in enumerate(datasets):
         plt.xscale('log')
         plt.xlabel('$\log(\mathrm{depth})$')
         plt.ylabel('$x_\mathrm{HII}$')
-        # get index of file from its name by stripping out all non-digit characters
-        number = int(re.sub(r'\D','',name))
         # find value of parameter with this index
-        param_val = grid_file[np.where(grid_file['idx'] == number)]['hden'][0]
-        plt.plot(set[:,0], set[:,7], label='$\log(n_\mathrm{{HI}})={}$'.format(param_val))
+        param_val = grid_file['hden'][idx]
+        plt.plot(dset[:,0], dset[:,7], label='$\log(n_\mathrm{{HI}})={}$'.format(param_val))
         plt.legend()
 
     plt.show()
-
-        
-    
-    
-#    record = np.dtype(
 
 if __name__ == '__main__':
     import argparse
