@@ -15,6 +15,7 @@
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *                                                                                 *
                        ***********************************************************************************
 
@@ -35,6 +36,7 @@
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *                                                                                 *
                        ***********************************************************************************
 
@@ -73,7 +75,7 @@
  Writing input files has been completed.
 
 
- Cloudy ends: 0 zone, 0 iteration. (single thread) ExecTime(s) 0.01
+ Cloudy ends: 0 zone, 0 iteration. (single thread) ExecTime(s) 0.03
  [Stop in cdMain at maincl.cpp:517, Cloudy exited OK]
  ************************************************** GRID_DELIMIT
                                                           Cloudy 17.00
@@ -93,6 +95,7 @@
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *                                                                                 *
                        ***********************************************************************************
 
@@ -171,6 +174,7 @@
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *********************************> Log(U): -2.48 <*********************************
                        >>>>>>>>>> Cautions are present.
 
@@ -455,7 +459,7 @@ H  1      1215.67A   -6.098   45.0964      H  1      8323.38A   -9.760    0.0098
    <a>:3.84E-16  erdeFe3.7E+30  Tcompt1.22E+15  Tthr6.70E+21  <Tden>: 5.53E+03  <dens>:1.67E-28  <MolWgt>1.01E+00
      Mean Jeans  l(cm)3.58E+23  M(sun)2.03E+09  smallest:     len(cm):3.04E+23  M(sun):1.23E+09  a_ox tran: -5.51
  Rion:1.000E+30  Dist:0.00E+00  Diam:0.000E+00
- Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    68.2
+ Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    60.1
  ConvrgError(%)  <eden>  0.032  MaxEden  0.425  <H-C>   0.18  Max(H-C)   15.03  <Press>   0.000  MaxPrs er  0.000
   Continuity(%)  chng Te   3.1  elec den   5.3  n(H2)    0.0  n(CO)        0.0
 
@@ -564,7 +568,7 @@ Vary density
          1 mean step length searches/chemistry step
 ----------------------------------------------------
 
- Cloudy ends: 269 zones, 3 iterations, 2 cautions. Failures: 3 thermal, 0 pressure, 0 ionization, 0 electron density. (4 forked threads) ExecTime(s) 68.24
+ Cloudy ends: 269 zones, 3 iterations, 2 cautions. Failures: 3 thermal, 0 pressure, 0 ionization, 0 electron density. (4 forked threads) ExecTime(s) 60.05
  [Stop in cdMain at maincl.cpp:517, Cloudy exited OK]
  ************************************************** GRID_DELIMIT -- grid000000000
                                                           Cloudy 17.00
@@ -584,6 +588,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *                                                                                 *
                        ***********************************************************************************
 
@@ -652,6 +657,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *********************************> Log(U): -2.98 <*********************************
                        >>>>>>>>>> Cautions are present.
 
@@ -934,7 +940,7 @@ H  1      1215.67A   -6.104   43.2506      H  1      4.05113m   -9.086    0.0450
    <a>:4.35E-16  erdeFe3.7E+30  Tcompt3.88E+14  Tthr1.03E+21  <Tden>: 5.87E+03  <dens>:5.29E-28  <MolWgt>1.01E+00
      Mean Jeans  l(cm)2.07E+23  M(sun)1.25E+09  smallest:     len(cm):1.70E+23  M(sun):6.87E+08  a_ox tran: -3.64
  Rion:1.000E+30  Dist:0.00E+00  Diam:0.000E+00
- Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    52.1
+ Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    40.2
  ConvrgError(%)  <eden>  0.031  MaxEden  0.337  <H-C>   0.08  Max(H-C)    0.47  <Press>   0.000  MaxPrs er  0.000
   Continuity(%)  chng Te   1.9  elec den   4.6  n(H2)    0.0  n(CO)        0.0
 
@@ -1009,7 +1015,7 @@ Vary density
          1 mean step length searches/chemistry step
 ----------------------------------------------------
 
- Cloudy ends: 248 zones, 3 iterations, 2 cautions. (4 forked threads) ExecTime(s) 52.11
+ Cloudy ends: 248 zones, 3 iterations, 2 cautions. (4 forked threads) ExecTime(s) 40.18
  [Stop in cdMain at maincl.cpp:517, Cloudy exited OK]
  ************************************************** GRID_DELIMIT -- grid000000001
                                                           Cloudy 17.00
@@ -1029,6 +1035,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *                                                                                 *
                        ***********************************************************************************
 
@@ -1096,6 +1103,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *********************************> Log(U): -3.48 <*********************************
                        >>>>>>>>>> Cautions are present.
 
@@ -1380,7 +1388,7 @@ H  1      1215.67A   -6.113   41.3332      H  1      4.05113m   -9.065    0.0463
    <a>:3.36E-16  erdeFe3.7E+30  Tcompt1.24E+14  Tthr3.26E+20  <Tden>: 5.68E+03  <dens>:1.67E-27  <MolWgt>1.01E+00
      Mean Jeans  l(cm)1.15E+23  M(sun)6.67E+08  smallest:     len(cm):9.62E+22  M(sun):3.92E+08  a_ox tran: -3.13
  Rion:1.000E+30  Dist:0.00E+00  Diam:0.000E+00
- Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    49.3
+ Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    66.7
  ConvrgError(%)  <eden>  0.031  MaxEden  0.379  <H-C>   0.08  Max(H-C)    0.48  <Press>   0.000  MaxPrs er  0.000
   Continuity(%)  chng Te   1.9  elec den   4.6  n(H2)    0.0  n(CO)        0.0
 
@@ -1455,7 +1463,7 @@ Vary density
          1 mean step length searches/chemistry step
 ----------------------------------------------------
 
- Cloudy ends: 240 zones, 3 iterations, 2 cautions. (4 forked threads) ExecTime(s) 49.27
+ Cloudy ends: 240 zones, 3 iterations, 2 cautions. (4 forked threads) ExecTime(s) 66.66
  [Stop in cdMain at maincl.cpp:517, Cloudy exited OK]
  ************************************************** GRID_DELIMIT -- grid000000002
                                                           Cloudy 17.00
@@ -1475,6 +1483,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *                                                                                 *
                        ***********************************************************************************
 
@@ -1543,6 +1552,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *********************************> Log(U): -3.98 <*********************************
                        >>>>>>>>>> Cautions are present.
 
@@ -1828,7 +1838,7 @@ H  1      1215.67A   -6.162   39.4321      H  1      4.05113m   -9.087    0.0468
    <a>:3.84E-16  erdeFe3.7E+30  Tcompt4.05E+13  Tthr3.60E+19  <Tden>: 5.82E+03  <dens>:5.29E-27  <MolWgt>1.01E+00
      Mean Jeans  l(cm)6.54E+22  M(sun)3.89E+08  smallest:     len(cm):5.40E+22  M(sun):2.19E+08  a_ox tran: -2.27
  Rion:1.000E+30  Dist:0.00E+00  Diam:0.000E+00
- Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    47.9
+ Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    65.1
  ConvrgError(%)  <eden>  0.033  MaxEden  0.421  <H-C>   0.11  Max(H-C)    0.50  <Press>   0.000  MaxPrs er  0.000
   Continuity(%)  chng Te   3.7  elec den   4.6  n(H2)    0.0  n(CO)        0.0
 
@@ -1903,7 +1913,7 @@ Vary density
          1 mean step length searches/chemistry step
 ----------------------------------------------------
 
- Cloudy ends: 226 zones, 3 iterations, 2 cautions. (4 forked threads) ExecTime(s) 47.94
+ Cloudy ends: 226 zones, 3 iterations, 2 cautions. (4 forked threads) ExecTime(s) 65.08
  [Stop in cdMain at maincl.cpp:517, Cloudy exited OK]
  ************************************************** GRID_DELIMIT -- grid000000003
                                                           Cloudy 17.00
@@ -1923,6 +1933,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *                                                                                 *
                        ***********************************************************************************
 
@@ -1992,6 +2003,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *********************************> Log(U): -4.48 <*********************************
                        >>>>>>>>>> Cautions are present.
 
@@ -2286,7 +2298,7 @@ H  1      949.743A  -10.941    0.0011      H  1      1.94454m   -9.879    0.0132
    <a>:8.71E-16  erdeFe3.7E+30  Tcompt1.41E+13  Tthr4.72E+18  <Tden>: 5.92E+03  <dens>:1.67E-26  <MolWgt>1.01E+00
      Mean Jeans  l(cm)3.71E+22  M(sun)2.25E+08  smallest:     len(cm):3.03E+22  M(sun):1.23E+08  a_ox tran: -1.85
  Rion:1.000E+30  Dist:0.00E+00  Diam:0.000E+00
- Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    34.1
+ Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    59.2
  ConvrgError(%)  <eden>  0.042  MaxEden  0.420  <H-C>   0.12  Max(H-C)    0.49  <Press>   0.000  MaxPrs er  0.000
   Continuity(%)  chng Te   4.5  elec den   4.2  n(H2)    0.0  n(CO)        0.0
 
@@ -2361,7 +2373,7 @@ Vary density
          1 mean step length searches/chemistry step
 ----------------------------------------------------
 
- Cloudy ends: 207 zones, 3 iterations, 2 cautions. (4 forked threads) ExecTime(s) 34.11
+ Cloudy ends: 207 zones, 3 iterations, 2 cautions. (4 forked threads) ExecTime(s) 59.17
  [Stop in cdMain at maincl.cpp:517, Cloudy exited OK]
  ************************************************** GRID_DELIMIT -- grid000000004
                                                           Cloudy 17.00
@@ -2381,6 +2393,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *                                                                                 *
                        ***********************************************************************************
 
@@ -2448,6 +2461,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *********************************> Log(U): -4.98 <*********************************
                        >>>>>>>>>> Cautions are present.
 
@@ -2752,7 +2766,7 @@ H  1      926.226A  -11.058    0.0013      H  1      1.73620m  -10.282    0.0079
    <a>:4.82E-15  erdeFe3.7E+30  Tcompt5.45E+12  Tthr3.51E+17  <Tden>: 5.89E+03  <dens>:5.29E-26  <MolWgt>1.00E+00
      Mean Jeans  l(cm)2.08E+22  M(sun)1.26E+08  smallest:     len(cm):1.69E+22  M(sun):6.78E+07  a_ox tran: -1.83
  Rion:1.000E+30  Dist:0.00E+00  Diam:0.000E+00
- Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    30.1
+ Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    35.9
  ConvrgError(%)  <eden>  0.041  MaxEden  0.375  <H-C>   0.13  Max(H-C)    0.47  <Press>   0.000  MaxPrs er  0.000
   Continuity(%)  chng Te   3.5  elec den   4.6  n(H2)    0.0  n(CO)        0.0
 
@@ -2827,7 +2841,7 @@ Vary density
          1 mean step length searches/chemistry step
 ----------------------------------------------------
 
- Cloudy ends: 170 zones, 3 iterations, 1 caution. (4 forked threads) ExecTime(s) 30.08
+ Cloudy ends: 170 zones, 3 iterations, 1 caution. (4 forked threads) ExecTime(s) 35.89
  [Stop in cdMain at maincl.cpp:517, Cloudy exited OK]
  ************************************************** GRID_DELIMIT -- grid000000005
                                                           Cloudy 17.00
@@ -2847,6 +2861,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *                                                                                 *
                        ***********************************************************************************
 
@@ -2910,6 +2925,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *********************************> Log(U): -5.48 <*********************************
                        >>>>>>>>>> Cautions are present.
 
@@ -3217,7 +3233,7 @@ H  1      923.150A  -11.086    0.0016      H  1      1.68064m  -10.454    0.0069
    <a>:5.63E-14  erdeFe3.7E+30  Tcompt2.41E+12  Tthr1.22E+16  <Tden>: 6.34E+03  <dens>:1.67E-25  <MolWgt>9.90E-01
      Mean Jeans  l(cm)1.22E+22  M(sun)7.95E+07  smallest:     len(cm):9.64E+21  M(sun):3.95E+07  a_ox tran: -1.83
  Rion:1.000E+30  Dist:0.00E+00  Diam:0.000E+00
- Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    14.7
+ Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    33.9
  ConvrgError(%)  <eden>  0.047  MaxEden  0.335  <H-C>   0.17  Max(H-C)    0.48  <Press>   0.000  MaxPrs er  0.000
   Continuity(%)  chng Te  12.7  elec den   7.0  n(H2)    0.0  n(CO)        0.0
 
@@ -3292,7 +3308,7 @@ Vary density
          1 mean step length searches/chemistry step
 ----------------------------------------------------
 
- Cloudy ends: 130 zones, 3 iterations, 1 caution. (4 forked threads) ExecTime(s) 14.67
+ Cloudy ends: 130 zones, 3 iterations, 1 caution. (4 forked threads) ExecTime(s) 33.88
  [Stop in cdMain at maincl.cpp:517, Cloudy exited OK]
  ************************************************** GRID_DELIMIT -- grid000000006
                                                           Cloudy 17.00
@@ -3312,6 +3328,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *                                                                                 *
                        ***********************************************************************************
 
@@ -3375,6 +3392,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *********************************> Log(U): -5.98 <*********************************
                        >>>>>>>>>> Cautions are present.
 
@@ -3683,7 +3701,7 @@ H  1      923.150A  -11.098    0.0019      H  1      1.68064m  -10.523    0.0072
    <a>:4.18E-13  erdeFe3.7E+30  Tcompt1.19E+12  Tthr5.66E+14  <Tden>: 6.57E+03  <dens>:5.29E-25  <MolWgt>9.71E-01
      Mean Jeans  l(cm)6.98E+21  M(sun)4.74E+07  smallest:     len(cm):5.41E+21  M(sun):2.21E+07  a_ox tran: -1.83
  Rion:1.000E+30  Dist:0.00E+00  Diam:0.000E+00
- Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    14.7
+ Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    31.8
  ConvrgError(%)  <eden>  0.036  MaxEden  0.138  <H-C>   0.12  Max(H-C)    0.48  <Press>   0.000  MaxPrs er  0.000
   Continuity(%)  chng Te  43.2  elec den  17.3  n(H2)    0.0  n(CO)        0.0
 
@@ -3758,7 +3776,7 @@ Vary density
          1 mean step length searches/chemistry step
 ----------------------------------------------------
 
- Cloudy ends: 100 zones, 3 iterations, 3 cautions. (4 forked threads) ExecTime(s) 14.68
+ Cloudy ends: 100 zones, 3 iterations, 3 cautions. (4 forked threads) ExecTime(s) 31.76
  [Stop in cdMain at maincl.cpp:517, Cloudy exited OK]
  ************************************************** GRID_DELIMIT -- grid000000007
                                                           Cloudy 17.00
@@ -3778,6 +3796,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *                                                                                 *
                        ***********************************************************************************
 
@@ -3841,6 +3860,7 @@ Vary density
                        * print last iteration                                                            *
                        * save grid "grid-density.grd" last no hash                                       *
                        * save overview "grid-density.ovr" last separate                                  *
+                       * save continuum emissivity 1 "grid-density.ems" last separate                    *
                        *********************************> Log(U): -6.48 <*********************************
                        >>>>>>>>>> Cautions are present.
 
@@ -4152,7 +4172,7 @@ H  1      920.963A  -11.122    0.0023      H  1      1.64071m  -10.724    0.0058
    <a>:3.02E-12  erdeFe3.7E+30  Tcompt6.25E+11  Tthr7.47E+13  <Tden>: 7.98E+03  <dens>:1.67E-24  <MolWgt>9.16E-01
      Mean Jeans  l(cm)4.37E+21  M(sun)3.69E+07  smallest:     len(cm):2.64E+21  M(sun):8.08E+06  a_ox tran: -1.83
  Rion:1.000E+30  Dist:0.00E+00  Diam:0.000E+00
- Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    10.1
+ Hatom level 70  HatomType: add  HInducImp  F  He tot level: 63  He2 level:   70  ExecTime    11.2
  ConvrgError(%)  <eden>  0.043  MaxEden  0.118  <H-C>   0.16  Max(H-C)    0.42  <Press>   0.000  MaxPrs er  0.000
   Continuity(%)  chng Te 164.1  elec den  45.4  n(H2)    0.0  n(CO)        0.0
 
@@ -4227,6 +4247,6 @@ Vary density
          1 mean step length searches/chemistry step
 ----------------------------------------------------
 
- Cloudy ends: 48 zones, 3 iterations, 4 cautions. (4 forked threads) ExecTime(s) 10.08
+ Cloudy ends: 48 zones, 3 iterations, 4 cautions. (4 forked threads) ExecTime(s) 11.18
  [Stop in cdMain at maincl.cpp:517, Cloudy exited OK]
  ************************************************** GRID_DELIMIT -- grid000000008

@@ -16,3 +16,4 @@ iterate to convergence
 print last iteration
 save grid "grid-density.grd" last no hash
 save overview "grid-density.ovr" last separate
+save continuum emissivity 1 "grid-density.ems" last separate
