@@ -5,8 +5,10 @@ import numpy as np
 from scipy import integrate, interpolate, optimize
 from matplotlib import pyplot as plt, rc, cm, ticker
 from sys import version_info
-from os import path
-from multiprocessing import Pool
+import os
+import multiprocessing
+import signal
+import time
 
 if version_info.major < 3:
     from itertools import repeat, izip
@@ -113,21 +115,31 @@ class Py2StarHelper:
 def kernel(rtw, c, Mvir):
     rhs = Gf(rtw, c, Mvir)
     cond = lambda lognh: np.abs(Ff(lognh) - rhs)   
-    return 10**optimize.brute(cond, ((log_mean_nh, 0),))[0] * mp
+    #return 10**optimize.brute(cond, ((log_mean_nh, 0),))[0] * mp
+    return 10**optimize.minimize_scalar(cond, bounds=(log_mean_nh, 0), method='bounded').x * mp
 
 py2_kernel = Py2StarHelper(kernel)
 
-N_WORK = 16
 def rho_gas(rtws, c, Mvir):
     if isinstance(rtws, np.ndarray):
-        print('Calculating for {} radius values in range ({}, {})'.format(len(rtws), rtws.min(), rtws.max()))
-        print('Starting numerical run for M={:.3g}, c={:.3g} with {} workers'.format(Mvir, c, N_WORK))
-        worker_pool = Pool(N_WORK)
-        if version_info.major < 3:
-            rhos = worker_pool.map(py2_kernel, izip(rtws, repeat(c), repeat(Mvir)))
+        print('Starting numerical run for M={:.3g}, c={:.3g} with {} workers'.format(Mvir, c, N_CPUS))
+        start_time = time.time()
+        sigint_handler = signal.signal(signal.SIGINT, signal.SIG_IGN)
+        worker_pool = multiprocessing.Pool(N_CPUS)
+        signal.signal(signal.SIGINT, sigint_handler)
+        try:
+            if version_info.major < 3:
+                rhos = worker_pool.map_async(py2_kernel, izip(rtws, repeat(c), repeat(Mvir)), chunksize=10)
+            else:
+                rhos = worker_pool.starmap_async(kernel, zip(rtws, repeat(c), repeat(Mvir)), chunksize=10)
+            rhos = rhos.get(timeout=600)
+        except KeyboardInterrupt:
+            print('Aborting...')
+            worker_pool.terminate()
+            exit()
         else:
-            rhos = worker_pool.starmap(kernel, zip(rtws, repeat(c), repeat(Mvir)))
-        worker_pool.close()
+            print('Completed in {:.1f}s'.format(time.time() - start_time))
+            worker_pool.close()
         worker_pool.join()
     else: # calculate for a single radius
         rhos = kernel(rtws, c, Mvir)
@@ -151,15 +163,23 @@ if __name__ == "__main__":
 
     fname = 'rhos_gas.dat'
     fname_m = 'rhos_gas_masses.dat'
-    found_data = path.isfile(fname) and path.isfile(fname_m)
+    found_data = os.path.isfile(fname) and os.path.isfile(fname_m)
+    N_CPUS = multiprocessing.cpu_count()
 
     if not found_data:
-        print('Failed to load data, generate?')
-        prompt = raw_input()
+        prompt = raw_input('Failed to load data, generate? ')
         if prompt not in set(['yes', 'y', 'Yes']):
             print('Aborting...')
             exit()
-            
+        else:
+            prompt = raw_input('Number of processes (default = {}) '.format(N_CPUS))
+        if prompt is not '':
+            try:
+                N_CPUS = int(prompt)
+            except:
+                print('Aborting...')
+                exit()
+    
     if found_data:
         masses = np.loadtxt('rhos_gas_masses.dat')
         rtws, rhos_gas = np.hsplit(np.loadtxt('rhos_gas.dat'), [1])
@@ -169,8 +189,8 @@ if __name__ == "__main__":
         #############
         ## EDIT ME ##
         #############
-        masses = np.logspace(8, 9.65, 2) # in M_sun
-        rtws = np.geomspace(1e-3, 30, 10)
+        masses = np.logspace(8, 9.65, 20) # in M_sun
+        rtws = np.geomspace(1e-3, 30, 1000)
 
     T200s = Tvir(masses)
     R200s = Rvir(masses)
@@ -181,8 +201,12 @@ if __name__ == "__main__":
     ##################
     
     if not found_data:
+        print('Calculating for {} radius values in range ({}, {})'.format(len(rtws), rtws.min(), rtws.max()))
+        all_start_time = time.time()
         rhos_gas = np.array([rho_gas(rtws, cp, M200) for M200, cp
                                  in zip(masses, concentrations)])
+        print(rhos_gas)
+        print('Completed all calculations in {:.1f}s'.format(time.time() - all_start_time))
         np.savetxt('rhos_gas.dat', np.column_stack((rtws, rhos_gas.T)))
         np.savetxt('rhos_gas_masses.dat', masses)        
 
