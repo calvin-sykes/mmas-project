@@ -173,8 +173,6 @@ if __name__ == "__main__":
     fname_M = fname_base + '_masses' + fname_ext
     fname_Rv = fname_base + '_Rvirs' + fname_ext
     found_data = os.path.isfile(fname_rho) ^ (args.force)
-
-    print(fname_rho, fname_M, fname_Rv)
     
     N_CPUS = multiprocessing.cpu_count()
 
@@ -221,7 +219,7 @@ if __name__ == "__main__":
         rhos_gas = np.array([rho_gas(rtws, cp, M200) for M200, cp
                                  in zip(masses, concentrations)])
         print('Completed all calculations in {:.1f}s'.format(time.time() - all_start_time))
-        np.savetxt(fname, np.column_stack((rtws, rhos_gas.T)))
+        np.savetxt(fname_rho, np.column_stack((rtws, rhos_gas.T)))
         np.savetxt(fname_M, masses)
         np.savetxt(fname_Rv, R200s)
         
