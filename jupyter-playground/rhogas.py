@@ -9,6 +9,7 @@ import os
 import multiprocessing
 import signal
 import time
+import argparse
 
 if version_info.major < 3:
     from itertools import repeat, izip
@@ -19,7 +20,7 @@ else:
 ## Constants used at some point (all converted to cgs units) ##
 ###############################################################
 
-h = 0.671 # H_0 = 100h km/s/Mpc
+h = 0.673 # H_0 = 100h km/s/Mpc
 solmass = 1.990e30 # kg
 solmass *= 1000    # --> g
 mu = 0.6 
@@ -92,15 +93,15 @@ def Gf(rtw, c, Mvir):
 ## Concentration parameters ##
 ##############################
 
-def make_cp_interp():
-    cfile = np.loadtxt('Planck_cMz.dat')
-
-    ms = np.log10(10**cfile[:,0] * h * 10**10)
-    cps = cfile[:,1]
-
-    return interpolate.interp1d(10**ms, cps)
-
-c = make_cp_interp()
+def make_c_interp(model_str):
+    try:
+        ms, cs = np.loadtxt('Mvir_c_{:s}.dat'.format(model_str.title()), unpack=True)
+    except IOError:
+        print('{:s} mass-concentration parameter relation data not found\nAborting...'.format(model_str))
+        exit()
+    else:
+        print('Loading {:s} mass-concentration parameter relation data'.format(model_str.title()))
+    return interpolate.interp1d(ms, cs)
 
 #########################
 ## rho_gas calculation ##
@@ -160,10 +161,21 @@ def M_gas(rads, rhos):
 ##################
 
 if __name__ == "__main__":
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-c' , '--mass-conc-rel', dest='conc', required='true', type=str, help='The mass-concentration relation to use. Either "eagle" or "prada"')
+    parser.add_argument('-f', '--force-recalc', dest='force', action='store_true', help='Regenerate density profiles even if data is already found')
+    args = parser.parse_args()
 
-    fname = 'rhos_gas.dat'
-    fname_m = 'rhos_gas_masses.dat'
-    found_data = os.path.isfile(fname) and os.path.isfile(fname_m)
+    fname_ext = '.dat'
+    fname_base = 'rhos_gas'+ '_{:s}'.format(args.conc.lower())
+    fname_rho = fname_base + fname_ext
+    fname_M = fname_base + '_masses' + fname_ext
+    fname_Rv = fname_base + '_Rvirs' + fname_ext
+    found_data = os.path.isfile(fname_rho) ^ (args.force)
+
+    print(fname_rho, fname_M, fname_Rv)
+    
     N_CPUS = multiprocessing.cpu_count()
 
     if not found_data:
@@ -181,8 +193,9 @@ if __name__ == "__main__":
                 exit()
     
     if found_data:
-        masses = np.loadtxt('rhos_gas_masses.dat')
-        rtws, rhos_gas = np.hsplit(np.loadtxt('rhos_gas.dat'), [1])
+        masses = np.loadtxt(fname_M)
+        rtws, rhos_gas = np.hsplit(np.loadtxt(fname_rho), [1])
+        R200s = np.loadtxt(fname_Rv).flatten()
         rtws = rtws.flatten()
         rhos_gas = rhos_gas.T
     else:
@@ -191,10 +204,12 @@ if __name__ == "__main__":
         #############
         masses = np.logspace(8, 9.65, 20) # in M_sun
         rtws = np.geomspace(1e-3, 30, 1000)
+        R200s = Rvir(masses)
 
     T200s = Tvir(masses)
-    R200s = Rvir(masses)
-    concentrations = c(masses)
+    #np.savetxt('rhos_gas_Rvirs.dat', R200s)
+    c_func = make_c_interp(args.conc)
+    concentrations = c_func(masses)
 
     ##################
     ## Calculations ##
@@ -205,16 +220,17 @@ if __name__ == "__main__":
         all_start_time = time.time()
         rhos_gas = np.array([rho_gas(rtws, cp, M200) for M200, cp
                                  in zip(masses, concentrations)])
-        print(rhos_gas)
         print('Completed all calculations in {:.1f}s'.format(time.time() - all_start_time))
-        np.savetxt('rhos_gas.dat', np.column_stack((rtws, rhos_gas.T)))
-        np.savetxt('rhos_gas_masses.dat', masses)        
+        np.savetxt(fname, np.column_stack((rtws, rhos_gas.T)))
+        np.savetxt(fname_M, masses)
+        np.savetxt(fname_Rv, R200s)
+        
 
-    # virial radii
-    rhos_r200 = np.array([rho_gas(1, c, Mvir) for c, Mvir in zip(concentrations, masses)])
+    # densities at virial radii
+    rhos_R200 = np.array([rho_gas(1, c, Mvir) for c, Mvir in zip(concentrations, masses)])
 
-    # radii where Mgas == Mvir * fbar
-    fbar = 0.167 # universal baryon fraction
+    # densities at radii where Mgas == Mvir * fbar
+    fbar = 0.167 # universal baryon fraction omega_b / omega_M
     mass_targets = fbar * masses
 
     Rbars = np.empty_like(masses)
@@ -247,7 +263,7 @@ if __name__ == "__main__":
         kpc_rads = rtws * R200s[idx] / cm_to_kpc
         axm.plot(np.log10(kpc_rads), np.log10(rg / mp), color=colours[idx])    
     # plot virial radii
-    axm.plot(np.log10(R200s / cm_to_kpc), np.log10(rhos_r200 / mp), '--', c='k')
+    axm.plot(np.log10(R200s / cm_to_kpc), np.log10(rhos_R200 / mp), '--', c='k')
     axm.text(1.15, -5.75, r'$r_{200}$', rotation=50)
     # plot fbar * M200 radii
     axm.plot(np.log10(Rbars / cm_to_kpc), np.log10(rhos_Rbar / mp), '--', c='k')
