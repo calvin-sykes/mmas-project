@@ -162,6 +162,10 @@ def M_gas(rads, rhos):
 
 if __name__ == "__main__":
     
+    if version_info.major < 3:
+        input_func = raw_input
+    else:
+        input_func = input
     parser = argparse.ArgumentParser()
     parser.add_argument('-c' , '--mass-conc-rel', dest='conc', required='true', type=str, help='The mass-concentration relation to use. Either "eagle" or "prada"')
     parser.add_argument('-f', '--force-recalc', dest='force', action='store_true', help='Regenerate density profiles even if data is already found')
@@ -177,12 +181,12 @@ if __name__ == "__main__":
     N_CPUS = multiprocessing.cpu_count()
 
     if not found_data:
-        prompt = raw_input('Failed to load data, generate? ')
+        prompt = input_func('Failed to load data, generate? ')
         if prompt not in set(['yes', 'y', 'Yes']):
             print('Aborting...')
             exit()
         else:
-            prompt = raw_input('Number of processes (default = {}) '.format(N_CPUS))
+            prompt = input_func('Number of processes (default = {}) '.format(N_CPUS))
         if prompt is not '':
             try:
                 N_CPUS = int(prompt)
