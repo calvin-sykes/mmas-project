@@ -162,10 +162,6 @@ def M_gas(rads, rhos):
 
 if __name__ == "__main__":
     
-    if version_info.major < 3:
-        input_func = raw_input
-    else:
-        input_func = input
     parser = argparse.ArgumentParser()
     parser.add_argument('-c' , '--mass-conc-rel', dest='conc', required='true', type=str, help='The mass-concentration relation to use. Either "eagle" or "prada"')
     parser.add_argument('-f', '--force-recalc', dest='force', action='store_true', help='Regenerate density profiles even if data is already found')
@@ -181,12 +177,12 @@ if __name__ == "__main__":
     N_CPUS = multiprocessing.cpu_count()
 
     if not found_data:
-        prompt = input_func('Failed to load data, generate? ')
+        prompt = raw_input('Failed to load data, generate? ')
         if prompt not in set(['yes', 'y', 'Yes']):
             print('Aborting...')
             exit()
         else:
-            prompt = input_func('Number of processes (default = {}) '.format(N_CPUS))
+            prompt = raw_input('Number of processes (default = {}) '.format(N_CPUS))
         if prompt is not '':
             try:
                 N_CPUS = int(prompt)
@@ -196,7 +192,8 @@ if __name__ == "__main__":
     
     if found_data:
         masses = np.loadtxt(fname_M)
-        rtws, rhos_gas = np.hsplit(np.loadtxt(fname_rho), [1])
+        nhaloes = len(masses)
+        rtws, rhos_gas, _ = np.hsplit(np.loadtxt(fname_rho), [1, 1 + nhaloes]) # ignore temperatures for now
         R200s = np.loadtxt(fname_Rv).flatten()
         rtws = rtws.flatten()
         rhos_gas = rhos_gas.T
@@ -208,7 +205,7 @@ if __name__ == "__main__":
         rtws = np.geomspace(1e-3, 30, 1000)
         R200s = Rvir(masses)
 
-    T200s = Tvir(masses)
+    #T200s = Tvir(masses)
     #np.savetxt('rhos_gas_Rvirs.dat', R200s)
     c_func = make_c_interp(args.conc)
     concentrations = c_func(masses)
@@ -223,7 +220,7 @@ if __name__ == "__main__":
         rhos_gas = np.array([rho_gas(rtws, cp, M200) for M200, cp
                                  in zip(masses, concentrations)])
         print('Completed all calculations in {:.1f}s'.format(time.time() - all_start_time))
-        np.savetxt(fname_rho, np.column_stack((rtws, rhos_gas.T)))
+        np.savetxt(fname_rho, np.column_stack((rtws, rhos_gas.T, T(np.log10(rhos_gas / mp)).T)))
         np.savetxt(fname_M, masses)
         np.savetxt(fname_Rv, R200s)
         
