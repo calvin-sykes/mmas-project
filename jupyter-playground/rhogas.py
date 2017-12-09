@@ -40,7 +40,7 @@ rhocrit = 3 * (100 * h * 1e5 / (cm_to_pc * 1e6))**2 / (8 * np.pi * G)
 ## T-n_H relation ##
 ####################
 
-log_nh, log_T = np.loadtxt('T-nH.dat', unpack=True)
+log_nh, log_T = np.loadtxt('data/T-nH.dat', unpack=True)
 
 log_T = interpolate.UnivariateSpline(log_nh, log_T, s=0.001, k=3)
 dlogT_dlognh = log_T.derivative()
@@ -95,7 +95,7 @@ def Gf(rtw, c, Mvir):
 
 def make_c_interp(model_str):
     try:
-        ms, cs = np.loadtxt('Mvir_c_{:s}.dat'.format(model_str.title()), unpack=True)
+        ms, cs = np.loadtxt('data/Mvir_c_{:s}.dat'.format(model_str.title()), unpack=True)
     except IOError:
         print('{:s} mass-concentration parameter relation data not found\nAborting...'.format(model_str))
         exit()
