@@ -23,11 +23,11 @@ else:
 h = 0.673 # H_0 = 100h km/s/Mpc
 solmass = 1.990e30 # kg
 solmass *= 1000    # --> g
-mu = 3/7 #0.6 
+mu = 0.6
 mp = 1.673e-27 # kg
 mp *= 1000     # --> g
 G  = 6.674e-11 # m^3/(kg s^2)
-G *= 1000      # --> cm^3/(g s^2) 
+G *= 1000      # --> cm^3/(g s^2)
 kB = 1.381e-23 # J/K
 kB *= 1e7      # --> erg/K
 
