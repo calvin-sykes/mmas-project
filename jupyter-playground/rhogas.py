@@ -40,19 +40,38 @@ rhocrit = 3 * (100 * h * 1e5 / (cm_to_pc * 1e6))**2 / (8 * np.pi * G)
 ## T-n_H relation ##
 ####################
 
-log_nh, log_T = np.loadtxt('data/T-nH.dat', unpack=True)
-
-log_T = interpolate.UnivariateSpline(log_nh, log_T, s=0.001, k=3)
-dlogT_dlognh = log_T.derivative()
-
 def rho(lognh):
     return 10**lognh * mp
 
-def T(lognh):
-    return 10**log_T(lognh)
+class DensityTempRelation:
+    def __init__(self, model_str):
+        try:
+            log_nH, log_T = np.loadtxt('data/nH_T_{:s}.dat'.format(model_str.lower()), unpack=True)
+        except IOError:
+            print('{:s} density-temperature relation data not found\nAborting...'.format(model_str))
+            exit()
+        else:
+            print('Loading {:s} density-temperature parameter relation data'.format(model_str.title()))
+            self.logTfunc = interpolate.UnivariateSpline(log_nH, log_T, s=0.001, k=3)
+            self.dlogTfunc = self.logTfunc.derivative()
 
-def dT_drho(lognh):
-    return (T(lognh) / rho(lognh)) * dlogT_dlognh(lognh)
+    def T(self, lognh):
+        return 10**self.logTfunc(lognh)
+
+    def dT_drho(self, lognh):
+        return (self.logTfunc(lognh) / rho(lognh)) * self.dlogTfunc(lognh)
+
+T_rel = None
+
+#def make_nH_T_interp(model_str):
+#    try:
+#        log_nH, log_T = np.loadtxt('data/nH_T_{:s}.dat'.format(model_str.lower()), unpack=True)
+#    except IOError:
+#        print('{:s} density-temperature relation data not found\nAborting...'.format(model_str))
+#        exit()
+#    else:
+#        print('Loading {:s} density-temperature parameter relation data'.format(model_str.title()))
+#    return interpolate.UnivariateSpline(log_nH, log_T, s=0.001, k=3)
 
 ################
 ## F function ##
@@ -60,10 +79,9 @@ def dT_drho(lognh):
 
 # Only consider densities above the mean background density
 log_mean_nh = -6.7
-log_nh_valid = log_nh[log_nh > log_mean_nh]
 
 def F_integrand(lognh):
-    log_int =  T(lognh) / rho(lognh) + dT_drho(lognh)
+    log_int =  T_rel.T(lognh) / rho(lognh) + T_rel.dT_drho(lognh)
     # The integral is computed in log(nH) space
     # so a conversion back into rho space is required 
     return log_int * 10**lognh * mp * 2.303 # ln(10)
@@ -164,11 +182,12 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
     parser.add_argument('-c' , '--mass-conc-rel', dest='conc', required='true', type=str, help='The mass-concentration relation to use. Either "eagle" or "prada"')
+    parser.add_argument('-t' , '--nH-temp-rel', dest='nHT', required='true', type=str, help='The hydrogen density-temperature relation to use. Either "relhic" or "sphcloudy"')
     parser.add_argument('-f', '--force-recalc', dest='force', action='store_true', help='Regenerate density profiles even if data is already found')
     args = parser.parse_args()
 
     fname_ext = '.dat'
-    fname_base = 'rhos_gas'+ '_{:s}'.format(args.conc.lower())
+    fname_base = 'output/rhos_gas'+ '_{:s}_{:s}'.format(args.conc.lower(), args.nHT.lower())
     fname_rho = fname_base + fname_ext
     fname_M = fname_base + '_masses' + fname_ext
     fname_Rv = fname_base + '_Rvirs' + fname_ext
@@ -210,6 +229,8 @@ if __name__ == "__main__":
     c_func = make_c_interp(args.conc)
     concentrations = c_func(masses)
 
+    T_rel = DensityTempRelation(args.nHT)    
+
     ##################
     ## Calculations ##
     ##################
@@ -220,7 +241,7 @@ if __name__ == "__main__":
         rhos_gas = np.array([rho_gas(rtws, cp, M200) for M200, cp
                                  in zip(masses, concentrations)])
         print('Completed all calculations in {:.1f}s'.format(time.time() - all_start_time))
-        np.savetxt(fname_rho, np.column_stack((rtws, rhos_gas.T, T(np.log10(rhos_gas / mp)).T)))
+        np.savetxt(fname_rho, np.column_stack((rtws, rhos_gas.T, T_rel.T(np.log10(rhos_gas / mp)).T)))
         np.savetxt(fname_M, masses)
         np.savetxt(fname_Rv, R200s)
         
