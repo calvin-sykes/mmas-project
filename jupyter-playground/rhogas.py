@@ -366,28 +366,28 @@ if __name__ == "__main__":
         sm.set_array(np.log10(gas_masses))
 
         fig, (axm, axcb) = plt.subplots(1, 2, figsize=(13,12), gridspec_kw = {'width_ratios':[12, 1]})
-    axm.set_xlim(-0.5, 2.5)
-    axm.set_ylim(-7, -0.5)
-    axm.set_xlabel(r'$\log_{10}(r/\mathrm{kpc})$')
-    axm.set_ylabel(r'$\log_{10}(n_H/\mathrm{cm^{-3}})$')
-    for idx, rg in enumerate(rhos_gas):
-        kpc_rads = rtws * R200s[idx] / cm_to_kpc
-        axm.plot(np.log10(kpc_rads), np.log10(rg / mp), color=colours[idx])    
-    # plot virial radii
-    axm.plot(np.log10(R200s / cm_to_kpc), np.log10(rhos_R200 / mp), '--', c='k')
-    axm.text(1.15, -5.75, r'$r_{200}$', rotation=50)
-    # plot fbar * M200 radii
-    axm.plot(np.log10(Rbars / cm_to_kpc), np.log10(rhos_Rbar / mp), '--', c='k')
-    axm.text(2.0, -6.2, r'$r_\mathrm{bar}$', rotation=60)
-    # plot mean nH
-    axm.axhline(log_mean_nh, c='k', ls='--')
-    axm.text(-.25, -6.6, r'$\bar{n}_H$')
-    # plot colourbar
-    axcb.yaxis.tick_right()
-    axcb.yaxis.set_label_position('right')
-    axcb.set_ylabel(r'$\log_{10}(M_\mathrm{gas}/M_\odot)$')
-    axcb.xaxis.set_major_locator(ticker.NullLocator())
-    axcb.xaxis.set_major_formatter(ticker.NullFormatter())
-    for idx, mg in enumerate(gas_masses):
-        axcb.axhline(np.log10(mg), c=colours[idx])
-    plt.show()
+        axm.set_xlim(-0.5, 2.5)
+        axm.set_ylim(-7, -0.5)
+        axm.set_xlabel(r'$\log_{10}(r/\mathrm{kpc})$')
+        axm.set_ylabel(r'$\log_{10}(n_H/\mathrm{cm^{-3}})$')
+        for idx, rg in enumerate(rhos_gas):
+            kpc_rads = rtws * R200s[idx] / cm_to_kpc
+            axm.plot(np.log10(kpc_rads), np.log10(rg / mp), color=colours[idx])    
+        # plot virial radii
+        axm.plot(np.log10(R200s / cm_to_kpc), np.log10(rhos_R200 / mp), '--', c='k')
+        axm.text(1.15, -5.75, r'$r_{200}$', rotation=50)
+        # plot fbar * M200 radii
+        axm.plot(np.log10(Rbars / cm_to_kpc), np.log10(rhos_Rbar / mp), '--', c='k')
+        axm.text(2.0, -6.2, r'$r_\mathrm{bar}$', rotation=60)
+        # plot mean nH
+        axm.axhline(log_mean_nh, c='k', ls='--')
+        axm.text(-.25, -6.6, r'$\bar{n}_H$')
+        # plot colourbar
+        axcb.yaxis.tick_right()
+        axcb.yaxis.set_label_position('right')
+        axcb.set_ylabel(r'$\log_{10}(M_\mathrm{gas}/M_\odot)$')
+        axcb.xaxis.set_major_locator(ticker.NullLocator())
+        axcb.xaxis.set_major_formatter(ticker.NullFormatter())
+        for idx, mg in enumerate(gas_masses):
+            axcb.axhline(np.log10(mg), c=colours[idx])
+        plt.show()
