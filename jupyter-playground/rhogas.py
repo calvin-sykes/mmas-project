@@ -3,6 +3,8 @@
 from __future__ import print_function, division
 import numpy as np
 from scipy import integrate, interpolate, optimize
+import matplotlib
+matplotlib.use('pdf')
 from matplotlib import pyplot as plt, rc, cm, ticker
 from sys import version_info
 import os
@@ -333,32 +335,29 @@ if __name__ == "__main__":
         np.savetxt(fname_rho, np.column_stack((rtws, rhos_gas.T, T_rel.T(np.log10(rhos_gas / mp)).T)))
         np.savetxt(fname_M, masses)
         np.savetxt(fname_Rv, R200s)
-    elif not args.plot:
-        print('Nothing to do, exiting.')
-        exit(0)
-
-    # densities at virial radii
-    rhos_R200 = np.array([rho_gas(1, c, Mvir) for c, Mvir in zip(concentrations, masses)])
-
-    # densities at radii where Mgas == Mvir * fbar
-    fbar = 0.167 # universal baryon fraction omega_b / omega_M
-    mass_targets = fbar * masses
-
-    Rbars = np.empty_like(masses)
-    rhos_Rbar = np.empty_like(masses)
-
-    for idx, mt in enumerate(mass_targets):
-        loc = np.argmin([np.abs(mt - M_gas(rtws[:trial_loc] * R200s[idx], rhos_gas[idx][:trial_loc])) for trial_loc in range(len(rtws))])
-        Rbars[idx] = rtws[loc] * R200s[idx]
-        rhos_Rbar[idx] = rhos_gas[idx][loc]
 
     ###########
     ## Plots ##
     ###########
     
     if args.plot:
+        # densities at virial radii
+        rhos_R200 = np.array([rho_gas(1, c, Mvir) for c, Mvir in zip(concentrations, masses)])
+
+        # densities at radii where Mgas == Mvir * fbar
+        fbar = 0.167 # universal baryon fraction omega_b / omega_M
+        mass_targets = fbar * masses
+
+        Rbars = np.empty_like(masses)
+        rhos_Rbar = np.empty_like(masses)
+
+        for idx, mt in enumerate(mass_targets):
+            loc = np.argmin([np.abs(mt - M_gas(rtws[:trial_loc] * R200s[idx], rhos_gas[idx][:trial_loc])) for trial_loc in range(len(rtws))])
+            Rbars[idx] = rtws[loc] * R200s[idx]
+            rhos_Rbar[idx] = rhos_gas[idx][loc]
+
         rtws_within_r200 = rtws[rtws <= 1]
-        gas_masses = [M_gas(rtws_within_r200 * rv, rg[rtws < 1]) for rg, rv in zip(rhos_gas, R200s)]
+        gas_masses = [M_gas(rtws_within_r200 * rv, rg[rtws <= 1]) for rg, rv in zip(rhos_gas, R200s)]
         
         colourvals = np.linspace(0., 1., len(rhos_gas))
         colours = [cm.rainbow(x) for x in colourvals]
@@ -390,4 +389,5 @@ if __name__ == "__main__":
         axcb.xaxis.set_major_formatter(ticker.NullFormatter())
         for idx, mg in enumerate(gas_masses):
             axcb.axhline(np.log10(mg), c=colours[idx])
-        plt.show()
+        #plt.show()
+        plt.savefig(fname_base + '.pdf')
