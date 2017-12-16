@@ -321,7 +321,7 @@ if __name__ == "__main__":
         ## EDIT ME ##
         #############
         masses = np.logspace(8, 9.65, 21) # in M_sun
-        rtws = np.geomspace(1e-3, 30, 1000)
+        rtws = np.geomspace(1e-4, 100, 1000)
         R200s = Rvir(masses)
 
     c_rel = MassConcentrationRelation(args.conc)
