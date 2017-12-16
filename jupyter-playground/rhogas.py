@@ -4,7 +4,6 @@ from __future__ import print_function, division
 import numpy as np
 from scipy import integrate, interpolate, optimize
 import matplotlib
-matplotlib.use('pdf')
 from matplotlib import pyplot as plt, rc, cm, ticker
 from sys import version_info
 import os
@@ -278,9 +277,13 @@ if __name__ == "__main__":
     parser.add_argument('-c' , '--mass-conc-rel', dest='conc', required='true', type=str, help='The mass-concentration relation to use. Either "eagle" or "prada"')
     parser.add_argument('-t' , '--nH-temp-rel', dest='nHT', required='true', type=str, help='The hydrogen density-temperature relation to use. Either "relhic" or "sphcloudy"')
     parser.add_argument('-f', '--force-recalc', dest='force', action='store_true', help='Regenerate density profiles even if data is already found')
-    parser.add_argument('-p', '--plot', dest = 'plot', action='store_true', help='Produce a plot of the gas density profiles when calculations are complete')
+    parser.add_argument('-p', '--plot', dest='plot', action='store_true', help='Produce a plot of the gas density profiles when calculations are complete')
+    parser.add_argument('-i', '--interactive', dest='iplot', action='store_true', help='Display the plot in an onscreen window, rather than saving it to pdf')
     parser.add_argument('-n', '--num-cpus', dest='ncpus', default=AVAIL_CPUS-1, type=int, help='The number of cores to use for calculations. If not provided, all but one of available cores will be used')
     args = parser.parse_args()
+
+    if not args.iplot:
+        matplotlib.use('pdf')
 
     fname_ext = '.dat'
     fname_base = 'output/rhos_gas'+ '_{:s}_{:s}'.format(args.conc.lower(), args.nHT.lower())
@@ -396,5 +399,7 @@ if __name__ == "__main__":
         axcb.xaxis.set_major_formatter(ticker.NullFormatter())
         for idx, mg in enumerate(gas_masses):
             axcb.axhline(np.log10(mg), c=colours[idx])
-        #plt.show()
-        plt.savefig(fname_base + '.pdf')
+        if args.iplot:
+            plt.show()
+        else:
+            plt.savefig(fname_base + '.pdf')
