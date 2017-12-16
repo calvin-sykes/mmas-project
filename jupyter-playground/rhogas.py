@@ -271,12 +271,15 @@ def M_gas(rads, rhos):
 ##################
 
 if __name__ == "__main__":
+
+    AVAIL_CPUS = multiprocessing.cpu_count()
     
     parser = argparse.ArgumentParser()
     parser.add_argument('-c' , '--mass-conc-rel', dest='conc', required='true', type=str, help='The mass-concentration relation to use. Either "eagle" or "prada"')
     parser.add_argument('-t' , '--nH-temp-rel', dest='nHT', required='true', type=str, help='The hydrogen density-temperature relation to use. Either "relhic" or "sphcloudy"')
     parser.add_argument('-f', '--force-recalc', dest='force', action='store_true', help='Regenerate density profiles even if data is already found')
     parser.add_argument('-p', '--plot', dest = 'plot', action='store_true', help='Produce a plot of the gas density profiles when calculations are complete')
+    parser.add_argument('-n', '--num-cpus', dest='ncpus', default=AVAIL_CPUS-1, type=int, help='The number of cores to use for calculations. If not provided, all but one of available cores will be used')
     args = parser.parse_args()
 
     fname_ext = '.dat'
@@ -286,23 +289,27 @@ if __name__ == "__main__":
     fname_Rv = fname_base + '_Rvirs' + fname_ext
     found_data = os.path.isfile(fname_rho) ^ (args.force)
 
-    N_CPUS = multiprocessing.cpu_count()
+    N_CPUS = args.ncpus if args.ncpus > 0 else AVAIL_CPUS
 
-    if not found_data:
-        prompt = raw_input('Failed to load data, generate? ')
-        if prompt not in set(['yes', 'y', 'Yes']):
-            print('Aborting...')
-            exit(0)
-        else:
-            prompt = raw_input('Number of processes (default = {}) '.format(N_CPUS))
-        if prompt is not '':
-            try:
-                N_CPUS = int(prompt)
-            except:
-                print('Aborting...')
-                exit(1)
+#    if not found_data:
+#        prompt = raw_input('Failed to load data, generate? ')
+#        if prompt not in set(['yes', 'y', 'Yes']):
+#            print('Aborting...')
+#            exit(0)
+#        else:
+#            prompt = raw_input('Number of processes (default = {}) '.format(N_CPUS))
+#        if prompt is not '':
+#            try:
+#                N_CPUS = int(prompt)
+#            except:
+#                print('Aborting...')
+#                exit(1)
     
     if found_data:
+        if not args.plot:
+            print('Nothing to do, exiting.')
+            exit(0)
+        
         masses = np.loadtxt(fname_M)
         nhaloes = len(masses)
         rtws, rhos_gas, _ = np.hsplit(np.loadtxt(fname_rho), [1, 1 + nhaloes]) # ignore temperatures for now
@@ -325,7 +332,7 @@ if __name__ == "__main__":
     ##################
     ## Calculations ##
     ##################
-    
+
     if not found_data:
         print('Calculating for {} radius values in range ({}, {})'.format(len(rtws), rtws.min(), rtws.max()))
         all_start_time = time.time()
