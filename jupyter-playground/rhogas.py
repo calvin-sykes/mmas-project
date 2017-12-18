@@ -4,7 +4,6 @@ from __future__ import print_function, division
 import numpy as np
 from scipy import integrate, interpolate, optimize
 import matplotlib
-from matplotlib import pyplot as plt, rc, cm, ticker
 from sys import version_info
 import os
 import multiprocessing
@@ -285,6 +284,11 @@ if __name__ == "__main__":
     if not args.iplot:
         matplotlib.use('pdf')
 
+    # only now can we load the rest of matplotlib
+    from matplotlib import pyplot as plt, rc, cm, ticker
+    
+    matplotlib.rc('font', size=18)
+
     fname_ext = '.dat'
     fname_base = 'output/rhos_gas'+ '_{:s}_{:s}'.format(args.conc.lower(), args.nHT.lower())
     fname_rho = fname_base + fname_ext
@@ -375,6 +379,7 @@ if __name__ == "__main__":
         sm.set_array(np.log10(gas_masses))
 
         fig, (axm, axcb) = plt.subplots(1, 2, figsize=(13,12), gridspec_kw = {'width_ratios':[12, 1]})
+        fig.suptitle('Gas density profiles for {}/{} haloes'.format(args.conc.title(), args.nHT.title()))
         axm.set_xlim(-0.5, 2.5)
         axm.set_ylim(-7, -0.5)
         axm.set_xlabel(r'$\log_{10}(r/\mathrm{kpc})$')
@@ -402,4 +407,4 @@ if __name__ == "__main__":
         if args.iplot:
             plt.show()
         else:
-            plt.savefig(fname_base + '.pdf')
+            plt.savefig(fname_base + '.pdf', bbox_inches='tight')
