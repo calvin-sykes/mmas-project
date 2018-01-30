@@ -294,7 +294,10 @@ if __name__ == "__main__":
     fname_rho = fname_base + fname_ext
     fname_M = fname_base + '_masses' + fname_ext
     fname_Rv = fname_base + '_Rvirs' + fname_ext
-    found_data = os.path.isfile(fname_rho) ^ (args.force)
+    found_data = os.path.isfile(fname_rho)
+
+    if args.force:
+        found_data = False
 
     N_CPUS = args.ncpus if args.ncpus > 0 else AVAIL_CPUS
 
